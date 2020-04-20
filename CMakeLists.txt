@@ -17,6 +17,8 @@ project(FinalProject
         DESCRIPTION "CS 126 Final Project"
         LANGUAGES CXX)
 
+find_package(OpenCV REQUIRED)
+
 include(ExternalProject)
 # Optionally set things like CMAKE_CXX_STANDARD, CMAKE_POSITION_INDEPENDENT_CODE here
 
@@ -87,3 +89,8 @@ if(NOT catch2_POPULATED)
 endif()
 
 # Add more CMake libraries here ...
+
+include_directories(${OpenCV_INCLUDE_DIRS})
+target_link_libraries(mylibrary ${OpenCV_LIBS})
+target_link_libraries(test ${OpenCV_LIBS})
+target_link_libraries(cinder-myapp ${OpenCV_LIBS})
