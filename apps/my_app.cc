@@ -1,8 +1,9 @@
-// Copyright (c) 2020 [Your Name]. All rights reserved.
+// Copyright (c) 2020 [Karan Sodhi]. All rights reserved.
 
 #include <opencv2/opencv.hpp>
 #include "my_app.h"
 #include <cinder/app/App.h>
+#include <mylibrary/image_input.h>
 
 namespace myapp {
 
@@ -11,20 +12,14 @@ using cinder::app::KeyEvent;
 MyApp::MyApp() { }
 
 void MyApp::setup() {
-  cv::VideoCapture cap(0);
-
-  cv::Mat edges;
-  cv::namedWindow("edges",1);
-  for(;;)
-  {
-    cv::Mat frame;
-    cap >> frame; // get a new frame from camera
-    cv::cvtColor(frame, edges, cv::COLOR_BGR2GRAY);
-    cv::GaussianBlur(edges, edges, cv::Size(7,7), 1.5, 1.5);
-    cv::Canny(edges, edges, 0, 30, 3);
-    imshow("edges", edges);
-    if(cv::waitKey(30) >= 0) break;
+  vector<mylibrary::Character> characters = 
+      mylibrary::extractCharactersFromFile("/Users/karan/Documents/cinder_0.9.2_mac/my-projects/final-project-ksodhi2/assets/webcam_img.jpg");
+  for (auto const & character : characters) {
+    character.PrintPixels();
+    std::cout<< "-----------------------------"<<std::endl;
   }
+
+  //mylibrary::extractCharactersFromCamera();
 }
 
 void MyApp::update() { }
