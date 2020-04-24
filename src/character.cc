@@ -10,8 +10,7 @@ Character::Character() {
 }
 
 /**
- * Fills the pixel array with a '#' if the pixel at (row, col) of the 28x28
- * image is black and ' ' if the pixel is white.
+ * Fills the pixel array with the pixel value from the image
  */
 Character::Character(cv::Mat character_image) {
   pixels_.resize(kCharacterSize, std::vector<int>(kCharacterSize));
