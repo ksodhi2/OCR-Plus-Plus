@@ -3,6 +3,7 @@
 #ifndef FINALPROJECT_CHARACTER_H
 #define FINALPROJECT_CHARACTER_H
 
+
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <string>
@@ -13,11 +14,13 @@ const size_t kCharacterSize = 28;
 
 class Character {
  private:
-  std::vector<std::vector<char>> pixels_;
+  std::vector<std::vector<int>> pixels_;
   
  public:
   Character(cv::Mat character_image);
+  Character();
   void PrintPixels() const;
+  void FillPixel(int value, int row, int col);
 };
 
 }  // namespace mylibrary
