@@ -1,24 +1,23 @@
-#include <mylibrary/training_data.h>
-#include <fstream>
+#include <ocr/training_data.h>
 
-namespace mylibrary {
+namespace ocr {
 
 TrainingData::TrainingData(const string& file_path) {
   std::ifstream data_stream(file_path);
-  string line;
-  
-  while (!data_stream.eof()) {
-    int i = 0;
-    int row = 0;
-    int col = 0;
-    Character character;
-    while (getline(data_stream, line, ',')) {
-      if (i == 0) {
-        labels.push_back(atoi(line.c_str()));
-        i++;
+  string value;
+
+  while (data_stream.peek() != EOF) {
+    bool is_label = true;
+    size_t row = 0;
+    size_t col = 0;
+    LabeledCharacter labeled_character;
+    while (getline(data_stream, value, ',')) {
+      if (is_label) {
+        labeled_character.label = LabelToChar(std::stoi(value));
+        is_label = false;
         continue;
       }
-      character.FillPixel(atoi(line.c_str()), row, col);
+      labeled_character.character.FillPixel(std::stoi(value), row, col);
       row++;
       if (row == kCharacterSize) {
         row = 0;
@@ -28,19 +27,29 @@ TrainingData::TrainingData(const string& file_path) {
         break;
       }
     }
-    characters.push_back(character);
+    training_samples.push_back(labeled_character);
   }
 }
-void TrainingData::PrintData() {
-  for (auto const & character : characters) {
-    character.PrintPixels();
-    std::cout << "-----------------------------" << std::endl;
-  }  
+
+size_t TrainingData::Size() const { 
+  return training_samples.size(); 
 }
 
-int TrainingData::GetNumOfTrainingSamples() { 
-  return labels.size(); 
+Character TrainingData::GetCharacterAt(size_t index) const { 
+  return training_samples[index].character; 
 }
 
-}  // namespace mylibrary
+int TrainingData::GetLabelAt(size_t index) const { 
+  return training_samples[index].label; 
+}
+
+char TrainingData::LabelToChar(int label) const {
+  if (label < 10) {
+    return label + 48;
+  } else {
+    return label + 55;
+  }
+}
+
+}  // namespace ocr
 
