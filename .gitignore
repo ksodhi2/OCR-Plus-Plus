@@ -147,3 +147,6 @@ _deps
 # assets/*.db
 # assets/*.sqlite*
 /data/emnist_training_set.csv
+/data/textbox.prototxt
+/data/TextBoxes_icdar13.caffemodel
+/data/emnist_training_data.csv
