@@ -21,10 +21,12 @@ Mat ImageTranscriber::ReadImage(const Mat& input_image) {
     Mat character_region = processed_image(boundingRect);
     cv::dilate(character_region, character_region, cv::Mat(9, 9, 0));
     cv::resize(character_region, character_region, cv::Size(20, 20), cv::INTER_AREA);
-    cv::copyMakeBorder(character_region, character_region, 4, 4, 4, 4, cv::BORDER_CONSTANT);
+    cv::copyMakeBorder(character_region, character_region,4, 4, 4, 4, cv::BORDER_CONSTANT);
     ocr::Character character(character_region);
     
-    cv::putText(input_image, string(1, classifier.Classify(character)), cv::Point(boundingRect.x, boundingRect.y), cv::FONT_HERSHEY_SIMPLEX, 5, cv::Scalar(0, 255, 0), 3);
+    cv::putText(input_image, string(1, classifier.Classify(character)), 
+                cv::Point(boundingRect.x, boundingRect.y),
+                cv::FONT_HERSHEY_SIMPLEX, 5, cv::Scalar(0, 255, 0), 3);
   }
   return input_image;
 }
@@ -35,7 +37,10 @@ vector<cv::Rect> ImageTranscriber::FindAreaWithText(const Mat& input_image) {
   vector<cv::Rect> rects;
   vector<cv::Rect> viable_rects;
   vector<float> confidence;
-  cv::text::TextDetectorCNN::create(text_detection_description, text_detection_model)->detect(image, rects, confidence);
+  cv::text::TextDetectorCNN::create
+      (text_detection_description, text_detection_model)
+          ->detect(image, rects, confidence);
+  
   for (int i = 0; i < rects.size(); i++) {
     if (confidence[i] > .5) {
       viable_rects.push_back(rects[i]);
@@ -44,7 +49,8 @@ vector<cv::Rect> ImageTranscriber::FindAreaWithText(const Mat& input_image) {
   return rects;
 }
 
-bool ImageTranscriber::DoesRectangleOverlap(const cv::Rect& rectangle, const vector<cv::Rect>& rect_list) {
+bool ImageTranscriber::DoesRectangleOverlap(const cv::Rect& rectangle, 
+                                            const vector<cv::Rect>& rect_list) {
   for (const cv::Rect& rect: rect_list) {
     if ((rectangle & rect).area() > 0) {
       return true;

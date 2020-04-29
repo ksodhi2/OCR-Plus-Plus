@@ -4,7 +4,7 @@
 #define FINALPROJECT_APPS_MYAPP_H_
 
 #include <opencv2/opencv.hpp>
-#include <mylibrary/image_input.h>
+#include <ocr/image_input.h>
 #include <cinder/app/App.h>
 
 namespace ocr_app {

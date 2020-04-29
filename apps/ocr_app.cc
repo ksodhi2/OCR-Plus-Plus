@@ -9,10 +9,10 @@ using cinder::app::KeyEvent;
 OCRApp::OCRApp() = default;
 
 void OCRApp::setup() {
-  mylibrary::TrainingData training_data("data/emnist_training_data.csv");
+  ocr::TrainingData training_data("data/emnist_training_data.csv");
 
-  mylibrary::KNN knn(training_data, 11);
-  mylibrary::ImageTranscriber image_transcriber(knn);
+  ocr::KNN knn(training_data, 11);
+  ocr::ImageTranscriber image_transcriber(knn);
 
   Mat transcribed_image = image_transcriber.ReadImageFromFile("assets/IMG_0690.jpeg");
   imshow("Transcribed Image", transcribed_image);
