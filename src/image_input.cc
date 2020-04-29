@@ -1,68 +1,76 @@
 // Copyright (c) 2020 [Karan Sodhi]. All rights reserved.
 
-#include <mylibrary/character.h>
-#include <mylibrary/image_input.h>
+#include <ocr/image_input.h>
 
-#include <opencv2/opencv.hpp>
-#include <vector>
+namespace ocr {
 
-namespace mylibrary {
+ImageTranscriber::ImageTranscriber(const Classifier& classifier) : classifier(classifier) {}
 
-vector<Character> extractCharacters(const Mat& input_image) {
+Mat ImageTranscriber::ReadImage(const Mat& input_image) {
   Mat processed_image = ProcessImage(input_image);
-
+  
   vector<vector<cv::Point>> contours;
   cv::findContours(processed_image, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
-  std::vector<mylibrary::Character> characters;
+  vector<cv::Rect> text_areas = FindAreaWithText(processed_image);
   
-  int character_num = 0;
-  for (auto& contour : contours) {
-    if (cv::contourArea(contour) < 3000 || cv::contourArea(contour) > 30000) {
+  for (const auto& contour : contours) {
+    cv::Rect boundingRect = cv::boundingRect(contour);
+    if (boundingRect.area() < 5000 || !DoesRectangleOverlap(boundingRect, text_areas)) {
       continue;
     }
-    cv::Rect boundingRect = cv::boundingRect(contour);
-    cv::rectangle(input_image, boundingRect, cv::Scalar(0, 255, 0), 2);
     Mat character_region = processed_image(boundingRect);
-    cv::resize(character_region, character_region, cv::Size(28, 28), cv::INTER_AREA);
-    mylibrary::Character character(character_region);
-
-    cv::imshow(std::to_string(character_num), character_region);
-    character_num++;
-    characters.push_back(character);
+    cv::dilate(character_region, character_region, cv::Mat(9, 9, 0));
+    cv::resize(character_region, character_region, cv::Size(20, 20), cv::INTER_AREA);
+    cv::copyMakeBorder(character_region, character_region, 4, 4, 4, 4, cv::BORDER_CONSTANT);
+    ocr::Character character(character_region);
+    
+    cv::putText(input_image, string(1, classifier.Classify(character)), cv::Point(boundingRect.x, boundingRect.y), cv::FONT_HERSHEY_SIMPLEX, 5, cv::Scalar(0, 255, 0), 3);
   }
-  cv::imshow("input", input_image);
-  return characters;
+  return input_image;
 }
 
-Mat ProcessImage(const Mat& input_image) {
+vector<cv::Rect> ImageTranscriber::FindAreaWithText(const Mat& input_image) {
+  Mat image;
+  cv::cvtColor(input_image, image, cv::COLOR_GRAY2BGR);
+  vector<cv::Rect> rects;
+  vector<cv::Rect> viable_rects;
+  vector<float> confidence;
+  cv::text::TextDetectorCNN::create(text_detection_description, text_detection_model)->detect(image, rects, confidence);
+  for (int i = 0; i < rects.size(); i++) {
+    if (confidence[i] > .5) {
+      viable_rects.push_back(rects[i]);
+    }
+  }
+  return rects;
+}
+
+bool ImageTranscriber::DoesRectangleOverlap(const cv::Rect& rectangle, const vector<cv::Rect>& rect_list) {
+  for (const cv::Rect& rect: rect_list) {
+    if ((rectangle & rect).area() > 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
+Mat ImageTranscriber::ProcessImage(const Mat& input_image) {
   Mat processed_image;
   cv::cvtColor(input_image, processed_image, cv::COLOR_BGR2GRAY);
   cv::GaussianBlur(processed_image, processed_image, cv::Size(5, 5), 0);
   cv::threshold(processed_image, processed_image, 0, 255, cv::THRESH_BINARY_INV | cv::THRESH_OTSU);
-  cv::imshow("proccesed", processed_image);
   return processed_image;
 }
 
-vector<Character> extractCharactersFromFile(std::string file_path) {
-  cv::Mat input = cv::imread(file_path);
-  return extractCharacters(input);
+Mat ImageTranscriber::ReadImageFromFile(const std::string& file_path) {
+  Mat input = cv::imread(file_path);
+  return ReadImage(input);
 }
 
-// work in progress
-void extractCharactersFromCamera() {
+Mat ImageTranscriber::ReadImageFromCamera() {
   cv::VideoCapture cap(0);
-
-  while (true) {
-    cv::Mat input;
-    cap >> input;
-    vector<Character> characters = extractCharacters(input);
-    for (auto const & character : characters) {
-      character.PrintPixels();
-      std::cout<< "-----------------------------"<<std::endl;
-    }
-    cv::waitKey(1);
-  }
+  Mat input;
+  cap >> input;
+  return ReadImage(input);
 }
 
-
-}  // namespace mylibrary
+}  // namespace ocr
