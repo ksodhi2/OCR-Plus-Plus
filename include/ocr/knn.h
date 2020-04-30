@@ -33,7 +33,7 @@ class KNN : public Classifier {
    * @param character the character to find the nearest characters for
    * @return a vector containing the training data indexes for the nearest characters 
    */
-  vector<int> FindKNearest(const Character& character) const;
+  vector<size_t> FindKNearest(const Character& character) const;
 
  public:
   KNN(const TrainingData& training_data, int k);

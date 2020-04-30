@@ -156,3 +156,13 @@ _deps
 /assets/IMG_0691.jpeg
 /assets/IMG_0692.jpeg
 /assets/webcam_img.jpg
+/tests/assets/letters.png
+/tests/assets/character.jpg
+/tests/assets/A.png
+/tests/data/emnist_test.csv
+/tests/data/empty.csv
+/tests/data/non_integer.csv
+/tests/data/not_enough.csv
+/tests/data/too_big_and_small.csv
+/tests/assets/eight.png
+/tests/assets/one.png

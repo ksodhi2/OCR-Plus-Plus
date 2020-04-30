@@ -3,9 +3,10 @@
 #ifndef FINALPROJECT_APPS_MYAPP_H_
 #define FINALPROJECT_APPS_MYAPP_H_
 
-#include <opencv2/opencv.hpp>
-#include <ocr/image_input.h>
 #include <cinder/app/App.h>
+#include <ocr/image_transcriber.h>
+
+#include <opencv2/opencv.hpp>
 
 namespace ocr_app {
 

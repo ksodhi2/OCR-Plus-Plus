@@ -60,6 +60,7 @@ class ImageTranscriber {
   
   /**
    * Uses an image file to find text from an image and transcribe it
+   * if the file path is not valid throws an exception
    * @param file_path the file path of the image to transcribe
    * @return a transcribed image
    */

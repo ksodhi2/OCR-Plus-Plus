@@ -1,6 +1,6 @@
 // Copyright (c) 2020 [Karan Sodhi]. All rights reserved.
 
-#include <ocr/image_input.h>
+#include <ocr/image_transcriber.h>
 
 namespace ocr {
 
@@ -69,6 +69,9 @@ Mat ImageTranscriber::ProcessImage(const Mat& input_image) {
 
 Mat ImageTranscriber::ReadImageFromFile(const std::string& file_path) {
   Mat input = cv::imread(file_path);
+  if (input.empty()) {
+    throw std::invalid_argument("Must pass in valid image file");
+  }
   return ReadImage(input);
 }
 

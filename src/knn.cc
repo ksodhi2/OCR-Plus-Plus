@@ -15,8 +15,8 @@ double KNN::CalculateDistance(const Character& first_char, const Character& seco
   return sqrt(distance);
 }
 
-std::vector<int> KNN::FindKNearest(const Character& character) const {
-  std::vector<int> neighbor_indexes;
+std::vector<size_t> KNN::FindKNearest(const Character& character) const {
+  std::vector<size_t> neighbor_indexes;
   std::vector<double> distances;
   double min_distance = DBL_MAX;
   
@@ -25,12 +25,13 @@ std::vector<int> KNN::FindKNearest(const Character& character) const {
     for (size_t j = 0; j < training_data.Size(); j++) {
       double distance;
       if (i == 0) {
-        distance = CalculateDistance(character, training_data.GetCharacterAt(j));
+        distance = CalculateDistance(character, training_data.GetTrainingSampleAt(j).character);
         distances.push_back(distance);
       } else {
         distance = distances[j];
       }
-      if (distance < min_distance && std::find(neighbor_indexes.begin(), neighbor_indexes.end(), j) == neighbor_indexes.end()) {
+      if (distance < min_distance && std::find(neighbor_indexes.begin(),
+                         neighbor_indexes.end(), j) == neighbor_indexes.end()) {
         min_distance = distance;
         neighbor_index = j;
       }
@@ -42,10 +43,10 @@ std::vector<int> KNN::FindKNearest(const Character& character) const {
 }
 
 char KNN::Classify(const Character& character) const {
-  vector<int> neighbor_indexes = FindKNearest(character);
-  std::map<char, int> map_label_to_count;
-  for (int neighbor_index : neighbor_indexes) {
-    map_label_to_count[training_data.GetLabelAt(neighbor_index)]++;
+  vector<size_t> neighbor_indexes = FindKNearest(character);
+  std::unordered_map<char, int> map_label_to_count;
+  for (size_t neighbor_index : neighbor_indexes) {
+    map_label_to_count[training_data.GetTrainingSampleAt(neighbor_index).label]++;
   }
   
   int max_count = 0;

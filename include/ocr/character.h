@@ -21,8 +21,9 @@ class Character {
   
  public:
   /**
-   * Fills the pixel array with the pixel value from the image
-   * @param character_image a 28x28 black and white image of a character
+   * Fills the pixel array with the pixel value from the image,
+   * throws an exception if the image is not 28x28
+   * @param character_image a 28x28 image of a character
    */
   Character(const cv::Mat& character_image);
   Character();
