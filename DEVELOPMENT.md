@@ -15,4 +15,6 @@ April 25 - Created a KNN classifier to classify Characters
 April 27- Created an ImageTranscriber class that draws characters on Images
 
 April 28 - Created an abstract class to represent a classifier and implemented 
-a TextBoxes model for text detection 
+a TextBoxes model for text detection
+
+April 29 - Added tests for all my classes 
