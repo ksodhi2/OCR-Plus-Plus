@@ -96,6 +96,20 @@ if(NOT catch2_POPULATED)
     target_include_directories(catch2 INTERFACE ${catch2_SOURCE_DIR}/single_include)
 endif()
 
+FetchContent_Declare(
+        portable-file-dialogs
+        GIT_REPOSITORY https://github.com/ksodhi2/portable-file-dialogs.git
+)
+
+# Adds catch2 library. This is a header only library.
+FetchContent_GetProperties(portable-file-dialogs)
+if(NOT portable-file-dialogs_POPULATED)
+    FetchContent_Populate(portable-file-dialogs)
+    # This is overkill since we only need a single file. Though it is a clean solution.
+    add_library(portable-file-dialogs INTERFACE)
+    target_include_directories(portable-file-dialogs INTERFACE ${portable-file-dialogs_SOURCE_DIR}/include)
+endif()
+
 if(NOT TARGET OpenMP::OpenMP_CXX)
     find_package(Threads REQUIRED)
     add_library(OpenMP::OpenMP_CXX IMPORTED INTERFACE)
