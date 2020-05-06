@@ -1,15 +1,17 @@
 // Copyright 2020 [Karan Sodhi]. All rights reserved.
 
-#ifndef FINALPROJECT_CHARACTER_H
-#define FINALPROJECT_CHARACTER_H
+#ifndef INCLUDE_OCR_CHARACTER_H_
+#define INCLUDE_OCR_CHARACTER_H_
 
-#include <opencv2/opencv.hpp>
 #include <vector>
 #include <string>
+#include <opencv2/opencv.hpp>
 
 namespace ocr {
-  
+
 const size_t kCharacterSize = 28;
+const size_t kMinPixelValue = 0;
+const size_t kMaxPixelValue = 255;
 
 class Character {
  private:
@@ -18,23 +20,26 @@ class Character {
    * 0 is the most white value while 255 is the most black value
    */
   std::vector<std::vector<size_t>> pixels_;
-  
+
  public:
   /**
-   * Fills the pixel array with the pixel value from the image,
-   * throws an exception if the image is not 28x28
-   * @param character_image a 28x28 image of a character
+   * Dilates, re-sizes, and adds a border around a greyscale image of a 
+   * character to make it match the format of the characters in the EMNIST dataset.
+   * Then fills in the pixel array with the pixel values from the processed image
+   * @param character_image a greyscale image of a character, if the
+   * character image passed in is not in greyscale an exception is thrown.
    */
-  Character(const cv::Mat& character_image);
+  explicit Character(const cv::Mat& character_image);
   Character();
-  
+
   /**
-   * Fills the pixel array with the imputed value
-   * @param value the value of the pixel to input (0 - 255)
+   * Fills the pixel array with the imputed pixel value
+   * the value must be between 0 and 255 or an exception is thrown
+   * @param pixel_value the value of the pixel to input (0 - 255)
    * @param row the row where the pixel is located
    * @param col the column where the pixel is located
    */
-  void FillPixel(size_t value, size_t row, size_t col);
+  void FillPixel(size_t pixel_value, size_t row, size_t col);
 
   /**
    * @param row the row where the pixel is located
@@ -56,5 +61,4 @@ class Character {
 
 }  // namespace ocr
 
-
-#endif  // FINALPROJECT_CHARACTER_H
+#endif  // INCLUDE_OCR_CHARACTER_H_
