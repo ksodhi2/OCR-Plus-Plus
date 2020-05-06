@@ -4,31 +4,47 @@
 
 namespace ocr_app {
 
-using cinder::app::KeyEvent;
-
-OCRApp::OCRApp() = default;
+OCRApp::OCRApp()
+    : training_data("data/emnist_training_data.csv"),
+      image_transcriber(KNN(training_data, 11)) { }
 
 void OCRApp::setup() {
-  ocr::TrainingData training_data("data/emnist_training_data.csv");
-
-  ocr::KNN knn(training_data, 11);
-  ocr::ImageTranscriber image_transcriber(knn);
-
-  Mat transcribed_image = image_transcriber.ReadImageFromFile("assets/IMG_0690.jpeg");
-  imshow("Transcribed Image", transcribed_image);
-  
-  //while (true) {
-    //Mat live_trascribed_image = image_transcriber.ReadImageFromCamera();
-    //cv::imshow("live_trascribed_image", live_trascribed_image);
-    //cv::waitKey(1);
-  //}
-
+  ImGui::initialize(ImGui::Options().itemSpacing(glm::vec2(40,40)));
 }
 
-void OCRApp::update() { }
+void OCRApp::update() {
+  ImGui::Text("Welcome to OCR++\n"
+      "Choose an option below to transcribe your image\n"
+      "Press ESC to close out of the image");
+  
+  if (ImGui::Button("Transcribe Image From a File")) {
+    auto dialog = pfd::open_file("Select a file", ".", 
+                                {"Image Files", "*.png *.jpg *.jpeg"}, false);
+    if (!dialog.result().empty()) {
+      Mat transcribed_image = image_transcriber.ReadImageFromFile(dialog.result()[0]);
+      imshow("Transcribed Image", transcribed_image);
+    }
+  }
+  
+  if (ImGui::Button("Transcribe Images Live from a Webcam")) {
+    webcam_is_on = true;
+  }
+  
+  if (webcam_is_on) {
+    Mat transcribed_image = image_transcriber.ReadImageFromCamera();
+    cv::imshow("Live Image Transcription", transcribed_image);
+  }
+}
 
-void OCRApp::draw() { }
+void OCRApp::draw() {
+  cinder::gl::clear();
+}
 
-void OCRApp::keyDown(KeyEvent event) { }
+void OCRApp::keyDown(KeyEvent event) { 
+  if (event.getCode() == KeyEvent::KEY_ESCAPE) {
+    webcam_is_on = false;
+    cv::destroyAllWindows();
+  }
+}
 
 }  // namespace ocr_app
