@@ -1,7 +1,7 @@
 // Copyright (c) 2020 [Karan Sodhi]. All rights reserved.
 
-#ifndef FINALPROJECT_CLASSIFIER_H
-#define FINALPROJECT_CLASSIFIER_H
+#ifndef INCLUDE_OCR_CLASSIFIER_H_
+#define INCLUDE_OCR_CLASSIFIER_H_
 
 namespace ocr {
 
@@ -19,4 +19,4 @@ class Classifier {
 
 }  // namespace ocr
 
-#endif  // FINALPROJECT_CLASSIFIER_H
+#endif  // INCLUDE_OCR_CLASSIFIER_H_
