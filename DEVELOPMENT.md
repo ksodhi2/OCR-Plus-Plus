@@ -17,4 +17,11 @@ April 27- Created an ImageTranscriber class that draws characters on Images
 April 28 - Created an abstract class to represent a classifier and implemented 
 a TextBoxes model for text detection
 
-April 29 - Added tests for all my classes 
+April 29 - Added tests for all my classes
+
+May 1 - Used ImGuI and the Portable File Dialog library to create a GUI.
+
+May 4 - Refactored and added more documentation to my code. 
+Optimized my KNN classifier by using a priority queue.
+
+May 6 - Updated README with relevant information about my project
