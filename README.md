@@ -2,7 +2,7 @@
 
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-OCR++ is a an application that Transcribes images live from a webcam or from a local file by using a KNN classification Algorithm. The predicted test is overlayed on top of the image and displayed.
+OCR++ is an application that transcribes images live from a webcam or from a local file by using a KNN classification Algorithm. The predicted text is overlayed on top of the image and displayed.
 
 ## Dependencies
 - [Cinder]
@@ -13,13 +13,13 @@ OCR++ is a an application that Transcribes images live from a webcam or from a l
 - [Catch2]
 
 OCR++ uses the [EMNIST] data set for training and [TextBoxes] neural network for text recognition.
-Files for them are provided in the data folder but feel free to use your own data. 
+Files for them are provided in the data folder, but feel free to use your own data. 
 
 ## Quick Start
 ### MacOS
 1. Download Cinder and extract the downloaded item into a folder. We’ll call this folder ~/Cinder
 2. Open the ~/Cinder folder in [CLion] and click the green build button. This will build libcinder.
-3. Create a directory, say my-projects in ~/Cinder. Clone the project into this folder.
+3. Create a directory, say my-projects in ~/Cinder. Clone this repository into that folder.
 4. Install OpenCV using these [instructions]
 5. Open the project in CLion, set the target to cinder-OCR++ and click the run button.
 
