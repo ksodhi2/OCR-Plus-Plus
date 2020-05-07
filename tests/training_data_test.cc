@@ -7,26 +7,26 @@
 
 using ocr::TrainingData;
 
-ocr::TrainingData training_data("/Users/karan/Documents/cinder_0.9.2_mac/my-projects/final-project-ksodhi2/tests/data/emnist_test.csv");
+ocr::TrainingData training_data("/tests/data/emnist_test.csv");
 
 TEST_CASE("Constructing training data from a file") {
   SECTION("Trying to construct training data from a file that does not exist") {
     REQUIRE_THROWS(TrainingData("does/not/exist"));
   }
   SECTION("Trying to construct training data from an empty file") {
-    REQUIRE_THROWS(TrainingData("/Users/karan/Documents/cinder_0.9.2_mac/my-projects/final-project-ksodhi2/tests/data/empty.csv"));
+    REQUIRE_THROWS(TrainingData("/tests/data/empty.csv"));
   }
   SECTION("Trying to construct training data from a file with non enough values") {
-    REQUIRE_THROWS(TrainingData("/Users/karan/Documents/cinder_0.9.2_mac/my-projects/final-project-ksodhi2/tests/data/not_enough.csv"));
+    REQUIRE_THROWS(TrainingData("/tests/data/not_enough.csv"));
   }
   SECTION("Trying to construct training data from a file with non integer values") {
-    REQUIRE_THROWS(TrainingData("/Users/karan/Documents/cinder_0.9.2_mac/my-projects/final-project-ksodhi2/tests/data/non_integer.csv"));
+    REQUIRE_THROWS(TrainingData("/tests/data/non_integer.csv"));
   }
   SECTION("Trying to construct training data from a file with too big and small values") {
-    REQUIRE_THROWS(TrainingData("/Users/karan/Documents/cinder_0.9.2_mac/my-projects/final-project-ksodhi2/tests/data/too_big_and_small.csv"));
+    REQUIRE_THROWS(TrainingData("/tests/data/too_big_and_small.csv"));
   }
   SECTION("Trying to construct training data from a valid file") {
-    REQUIRE_NOTHROW(TrainingData("/Users/karan/Documents/cinder_0.9.2_mac/my-projects/final-project-ksodhi2/tests/data/emnist_test.csv"));
+    REQUIRE_NOTHROW(TrainingData("/tests/data/emnist_test.csv"));
   }
 }
 
@@ -39,8 +39,8 @@ TEST_CASE("Get Training Samples") {
   SECTION("Correct label for Training sample") {
     REQUIRE(labeled_character.label == '0');
   }
+  
   SECTION("Correct character for Training sample") {
-    
     SECTION("Correct Pixel Values") {
       REQUIRE(labeled_character.character.PixelValueAt(5, 17) == 254);
     }

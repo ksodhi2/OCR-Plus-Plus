@@ -1,10 +1,12 @@
 // Copyright (c) 2020 [Karan Sodhi]. All rights reserved.
 
-#ifndef FINALPROJECT_TRAINING_DATA_H
-#define FINALPROJECT_TRAINING_DATA_H
+#ifndef INCLUDE_OCR_TRAINING_DATA_H_
+#define INCLUDE_OCR_TRAINING_DATA_H_
 
 #include <ocr/character.h>
 #include <fstream>
+#include <vector>
+#include <string>
 
 using std::string;
 using std::vector;
@@ -32,14 +34,12 @@ class TrainingData {
   char LabelToChar(int label) const;
 
   /**
-   * Checks if the file path provides is a valid CSV file of the EMNIST dataset
-   * a valid file will contain a multiple of 785 numbers
-   * (28x28 for the pixels, and one for the label) that are all 
-   * integers between 0 and 255. Also checks if the file exists and is non empty.
-   * @param file_path the file path for the EMNIST dataset
-   * @return if the file is valid
+   * Checks if the a value in the CSV file of the EMNIST dataset is valid
+   * a valid value is an integer between 0 and 255
+   * @param file_path the value in the file
+   * @return if the value is valid
    */
-  bool IsTrainingFileValid(const string& file_path);
+  bool IsValueValid(const string& value) const;
 
  public:
   /**
@@ -47,16 +47,16 @@ class TrainingData {
    * the CSV file starts with a integer representation of the label,
    * the next 784 values are the pixel values of the character
    * and this pattern continues on in one big line.
-   * If the file passed does not have the correct format an exception is throwed 
+   * If the file passed does not have the correct format an exception is thrown 
    * @param file_path the file path for the EMNIST dataset
    */
-  TrainingData(const string& file_path);
-  
+  explicit TrainingData(const string& file_path);
+
   /**
    * @return the total number of training samples
    */
   size_t Size() const;
-  
+
   /**
    * @param index the index of the training sample
    * @return the training sample at that index
@@ -66,4 +66,4 @@ class TrainingData {
 
 }  // namespace ocr
 
-#endif  // FINALPROJECT_TRAINING_DATA_H
+#endif  // INCLUDE_OCR_TRAINING_DATA_H_
