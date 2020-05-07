@@ -2,7 +2,7 @@
 
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-OCR++ is a an application that uses a KNN classifier to Transcribe Images. 
+OCR++ is a an application that Transcribes images live from a webcam or from a local file by using a KNN classification Algorithm. The predicted test is overlayed on top of the image and displayed.
 
 ## Dependencies
 - [Cinder]
@@ -24,16 +24,17 @@ Files for them are provided in the data folder but feel free to use your own dat
 5. Open the project in CLion, set the target to cinder-OCR++ and click the run button.
 
 ## Usage
-![](https://i.imgur.com/xyTetIu.jpg)
-
 Users can select one of two options, either transcribe an image from a file (.jpg, .jpeg, .png)
 or use a webcam to transcribe the video stream live. Both handwritten and typed images can be transcribed.
+
+The ESC key closes out of the image.
+
+![](https://i.imgur.com/xyTetIu.jpg)
 
 ## Examples
 ![](https://i.imgur.com/GH802uJ.png)
 
 ![](https://i.imgur.com/sKpKCSp.jpg)
-
 
 **Author**: Karan Sodhi - [`ksodhi2@illinois.edu`](mailto:ksodhi2@illinois.edu)
 
