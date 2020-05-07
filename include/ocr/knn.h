@@ -1,22 +1,25 @@
 // Copyright 2020 [Karan Sodhi]. All rights reserved.
 
-#ifndef FINALPROJECT_KNN_H
-#define FINALPROJECT_KNN_H
+#ifndef INCLUDE_OCR_KNN_H_
+#define INCLUDE_OCR_KNN_H_
 
 #include <ocr/training_data.h>
 #include <ocr/classifier.h>
+#include <vector>
+
+using std::pair;
 
 namespace ocr {
 
 class KNN : public Classifier {
  private:
   const TrainingData& training_data;
-  
+
   /**
    * Value representing number of nearest neighbors to find (the k in KNN)
    */
   size_t k;
-  
+
   /**
    * For every pixel on the characters, calculates the euclidean distance 
    * between their pixel values.
@@ -24,11 +27,12 @@ class KNN : public Classifier {
    * @param second_char the second character
    * @return the total distance between each of their pixel values 
    */
-  double CalculateDistance(const Character& first_char, const Character& second_char) const;
+  double CalculateDistance(const Character& first_char,
+                           const Character& second_char) const;
 
   /**
-   * Finds the k "nearest" number of characters to the passed in character
-   * nearest in this context means the characters with
+   * Finds the k "nearest" number of characters to the passed in character,
+   * nearest in this context means the characters in the training set with
    * pixel values most closely matching the imputed character
    * @param character the character to find the nearest characters for
    * @return a vector containing the training data indexes for the nearest characters 
@@ -47,8 +51,6 @@ class KNN : public Classifier {
   char Classify(const Character& character) const;
 };
 
-}  // ocr
+}  // namespace ocr
 
-
-
-#endif  // FINALPROJECT_KNN_H
+#endif  // INCLUDE_OCR_KNN_H_
